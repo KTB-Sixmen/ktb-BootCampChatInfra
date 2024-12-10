@@ -1,0 +1,62 @@
+# ktb-bootcampchat-kafka-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktb-bootcampchat-kafka
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: kafka
+spec:
+  replicas: 3  # 고가용성을 위한 3개의 브로커
+  selector:
+    matchLabels:
+      app: ktb-bootcampchat
+      component: kafka
+  template:
+    metadata:
+      labels:
+        app: ktb-bootcampchat
+        component: kafka
+    spec:
+      containers:
+        - name: ktb-bootcampchat-kafka
+          image: confluentinc/cp-kafka:7.4.0
+          ports:
+            - name: internal
+              containerPort: 9092
+            - name: external
+              containerPort: 29092
+          env:
+            - name: KAFKA_BROKER_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "ktb-bootcampchat-zookeeper:2181"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "INTERNAL://$(POD_NAME).ktb-bootcampchat-kafka:9092,EXTERNAL://$(POD_IP):29092"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL"
+          envFrom:
+            - configMapRef:
+                name: ktb-bootcampchat-config
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 15
+            periodSeconds: 5

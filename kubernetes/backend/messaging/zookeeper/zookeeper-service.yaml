@@ -1,0 +1,27 @@
+# ktb-bootcampchat-zookeeper-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ktb-bootcampchat-zookeeper
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: zookeeper
+spec:
+  type: ClusterIP
+  ports:
+    - name: client
+      port: 2181
+      targetPort: 2181
+      protocol: TCP
+    - name: server
+      port: 2888
+      targetPort: 2888
+      protocol: TCP
+    - name: leader-election
+      port: 3888
+      targetPort: 3888
+      protocol: TCP
+  selector:
+    app: ktb-bootcampchat
+    component: zookeeper

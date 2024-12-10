@@ -1,0 +1,50 @@
+# ktb-bootcampchat-frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktb-bootcampchat-frontend
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ktb-bootcampchat
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: ktb-bootcampchat
+        component: frontend
+    spec:
+      containers:
+        - name: ktb-bootcampchat-frontend
+          image: ktb-bootcampchat/frontend:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: ktb-bootcampchat-config
+            - secretRef:
+                name: ktb-bootcampchat-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 5

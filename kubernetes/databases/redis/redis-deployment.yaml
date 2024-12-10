@@ -1,0 +1,56 @@
+# ktb-bootcampchat-redis-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktb-bootcampchat-redis
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: redis
+spec:
+  replicas: 1  # Redis는 상태 유지가 필요하므로 단일 레플리카로 운영
+  selector:
+    matchLabels:
+      app: ktb-bootcampchat
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: ktb-bootcampchat
+        component: redis
+    spec:
+      containers:
+        - name: ktb-bootcampchat-redis
+          image: redis:7.2-alpine  # 안정적인 Alpine 기반 이미지 사용
+          ports:
+            - containerPort: 6379
+              name: redis
+          volumeMounts:
+            - name: redis-storage
+              mountPath: /data  # Redis 데이터 저장 경로
+          envFrom:
+            - configMapRef:
+                name: ktb-bootcampchat-config
+            - secretRef:
+                name: ktb-bootcampchat-secret
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 15
+            periodSeconds: 5
+      volumes:
+        - name: redis-storage
+          persistentVolumeClaim:
+            claimName: ktb-bootcampchat-redis-pvc

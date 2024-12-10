@@ -1,0 +1,16 @@
+# ktb-bootcampchat-redis-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ktb-bootcampchat-redis-pvc
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi

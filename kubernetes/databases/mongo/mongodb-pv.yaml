@@ -1,0 +1,20 @@
+# ktb-bootcampchat-mongodb-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ktb-bootcampchat-mongodb-pv
+  labels:
+    app: ktb-bootcampchat
+    component: mongodb
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /data/ktb-bootcampchat/mongodb
+    type: DirectoryOrCreate
