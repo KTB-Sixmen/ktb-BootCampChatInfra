@@ -1,0 +1,28 @@
+plugin: aws_ec2
+
+aws_profile: load
+
+regions:
+  - ap-northeast-2
+
+keyed_groups:
+  - keys: private_ip_address
+    prefix: ip
+
+filters:
+  instance-state-name: running
+
+groups:
+  master: "'master' in tags.Type"
+  worker: "'worker' in tags.Service"
+  ingress: "'ingress' in tags.Type"
+  back: "'back' in tags.Type"
+  db: "'db' in tags.Type"
+  helm: "'0' in tags.Index"
+  
+hostnames:
+  - tag:Name
+  - private-ip-address
+
+compose:
+  ansible_host: public_ip_address
