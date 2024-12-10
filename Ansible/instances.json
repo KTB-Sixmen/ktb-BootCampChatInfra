@@ -1,0 +1,65 @@
+[
+  {
+    "Name": "Load Test Kubernetes master node1",
+    "InstanceId": "i-085dc582725c5b321",
+    "PrivateIP": "10.0.1.241",
+    "PublicIP": "3.35.51.6",
+    "Service": "master",
+    "Type": "master",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test Kubernetes master node2",
+    "InstanceId": "i-0025a3374997acfbf",
+    "PrivateIP": "10.0.2.97",
+    "PublicIP": "13.125.237.127",
+    "Service": "master",
+    "Type": "master",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test ingress3",
+    "InstanceId": "i-0e7452a817288bd8e",
+    "PrivateIP": "10.0.3.199",
+    "PublicIP": "3.35.217.119",
+    "Service": "worker",
+    "Type": "ingress",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test Kubernetes master node3",
+    "InstanceId": "i-0af762354343b9160",
+    "PrivateIP": "10.0.3.84",
+    "PublicIP": "13.125.171.252",
+    "Service": "master",
+    "Type": "master",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test ingress4",
+    "InstanceId": "i-0bea5c02d00e4c8de",
+    "PrivateIP": "10.0.4.69",
+    "PublicIP": "13.209.70.249",
+    "Service": "worker",
+    "Type": "ingress",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test back5",
+    "InstanceId": "i-0f42e6ad3d590b564",
+    "PrivateIP": "10.0.5.185",
+    "PublicIP": "43.202.32.225",
+    "Service": "worker",
+    "Type": "back",
+    "Environment": null
+  },
+  {
+    "Name": "Load Test back6",
+    "InstanceId": "i-0ae41ed1c51cfc6a9",
+    "PrivateIP": "10.0.6.37",
+    "PublicIP": "43.201.28.7",
+    "Service": "worker",
+    "Type": "back",
+    "Environment": null
+  }
+]

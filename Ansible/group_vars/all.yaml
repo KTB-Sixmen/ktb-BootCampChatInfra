@@ -1,0 +1,6 @@
+ansible_user: ec2-user
+ansible_home_dir: /home/{{ ansible_user }}
+ansible_remote_temp: "{{ ansible_home_dir }}/.ansible/tmp"
+ansible_ssh_private_key_file: ~/.ssh/admin_key.pem
+ansible_kubernetes_version: 1.31
+ansible_kubernetes_repo_url: https://pkgs.k8s.io/core:/stable:/v{{ ansible_kubernetes_version }}/rpm
