@@ -1,0 +1,42 @@
+# ktb-bootcampchat-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ktb-bootcampchat-ingress
+  namespace: ktb-bootcampchat
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ktb-bootcampchat.site # 도메인 미정
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ktb-bootcampchat-frontend
+                port:
+                  number: 3000
+
+          - path: /api(/.*)?
+            pathType: Prefix
+            backend:
+              service:
+                name: ktb-bootcampchat-backend
+                port:
+                  number: 5000
+
+    - host: api.ktb-bootcampchat.site
+      http:
+        paths:
+          - path: /(docs|openapi.json)
+            pathType: Prefix
+            backend:
+              service:
+                name: ktb-bootcampchat-backend
+                port:
+                  number: 5000

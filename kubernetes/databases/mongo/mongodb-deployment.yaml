@@ -1,0 +1,56 @@
+# ktb-bootcampchat-mongodb-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktb-bootcampchat-mongodb
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: mongodb
+spec:
+  replicas: 1  # MongoDB는 상태 유지가 필요하므로 단일 레플리카로 운영합니다
+  selector:
+    matchLabels:
+      app: ktb-bootcampchat
+      component: mongodb
+  template:
+    metadata:
+      labels:
+        app: ktb-bootcampchat
+        component: mongodb
+    spec:
+      containers:
+        - name: ktb-bootcampchat-mongodb
+          image: mongo:6.0  # 안정적인 LTS 버전 사용
+          ports:
+            - containerPort: 27017
+              name: mongodb
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+          envFrom:
+            - configMapRef:
+                name: ktb-bootcampchat-config
+            - secretRef:
+                name: ktb-bootcampchat-secret
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 15
+            periodSeconds: 5
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: ktb-bootcampchat-mongodb-pvc

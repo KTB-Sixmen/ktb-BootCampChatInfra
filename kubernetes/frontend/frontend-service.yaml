@@ -1,0 +1,23 @@
+# ktb-bootcampchat-frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ktb-bootcampchat-frontend
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: frontend
+spec:
+  selector:
+    app: ktb-bootcampchat
+    component: frontend
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 3000
+      protocol: TCP

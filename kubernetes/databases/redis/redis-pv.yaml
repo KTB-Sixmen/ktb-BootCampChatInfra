@@ -1,0 +1,20 @@
+# ktb-bootcampchat-redis-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ktb-bootcampchat-redis-pv
+  labels:
+    app: ktb-bootcampchat
+    component: redis
+    type: local
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /data/ktb-bootcampchat/redis
+    type: DirectoryOrCreate

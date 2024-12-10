@@ -1,0 +1,23 @@
+# ktb-bootcampchat-kafka-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ktb-bootcampchat-kafka
+  namespace: ktb-bootcampchat
+  labels:
+    app: ktb-bootcampchat
+    component: kafka
+spec:
+  type: ClusterIP
+  ports:
+    - name: internal
+      port: 9092
+      targetPort: 9092
+      protocol: TCP
+    - name: external
+      port: 29092
+      targetPort: 29092
+      protocol: TCP
+  selector:
+    app: ktb-bootcampchat
+    component: kafka
